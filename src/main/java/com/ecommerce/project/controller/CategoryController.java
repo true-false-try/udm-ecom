@@ -2,12 +2,11 @@ package com.ecommerce.project.controller;
 
 import com.ecommerce.project.model.Category;
 import com.ecommerce.project.service.CategoryService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -24,28 +23,21 @@ public class CategoryController {
     }
 
     @PostMapping("public/categories")
-    public ResponseEntity<String> createCategory(@RequestBody Category category) {
+    public ResponseEntity<String> createCategory(@Valid @RequestBody Category category) {
         service.createCategory(category);
         return ResponseEntity.status(HttpStatus.OK).body("Category added successfully");
     }
 
     @DeleteMapping("public/categories/{categoryId}")
-    public ResponseEntity<String> deleteCategory(@PathVariable Long categoryId) {
-        try {
-            String status = service.deleteCategory(categoryId);
-            return ResponseEntity.status(HttpStatus.OK).body(status);
-        } catch (ResponseStatusException ex) {
-            return new ResponseEntity<>(ex.getReason(), ex.getStatusCode());
-        }
+    public ResponseEntity<String> deleteCategory(@Valid @PathVariable Long categoryId) {
+        String status = service.deleteCategory(categoryId);
+        return ResponseEntity.status(HttpStatus.OK).body(status);
+
     }
 
     @PutMapping("public/update/{categoryId}")
-    public ResponseEntity<String> updateCategory(@RequestBody Category category, @PathVariable Long categoryId){
-        try {
-            Category responseCategory = service.updateCategory(category, categoryId);
-            return ResponseEntity.ok(responseCategory.toString());
-        } catch (ResponseStatusException ex) {
-            return new ResponseEntity<>(ex.getReason(), ex.getStatusCode());
-        }
+    public ResponseEntity<String> updateCategory(@Valid @RequestBody Category category, @PathVariable Long categoryId){
+        Category responseCategory = service.updateCategory(category, categoryId);
+        return ResponseEntity.ok(responseCategory.toString());
     }
 }

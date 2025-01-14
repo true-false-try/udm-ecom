@@ -1,10 +1,11 @@
 package com.ecommerce.project.service.impl;
 
+import com.ecommerce.project.exceptions.ApiException;
+import com.ecommerce.project.exceptions.ResourceNotFoundException;
 import com.ecommerce.project.model.Category;
 import com.ecommerce.project.repositories.CategoryRepository;
 import com.ecommerce.project.service.CategoryService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -20,17 +21,26 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<Category> getAllCategories() {
-        return categoryRepository.findAll();
+        List<Category> categories = categoryRepository.findAll();
+        if (categories.isEmpty()) {
+            throw new ApiException("Not category created till now.");
+        }
+        return categories;
     }
     @Override
     public void createCategory(Category category) {
+        String categoryName = category.getCategoryName();
+        Category savedCategory = categoryRepository.findCategoryByCategoryName(categoryName);
+        if (savedCategory != null) {
+            throw new ApiException("Category with the name " + categoryName + " already exists!");
+        }
         categoryRepository.save(category);
     }
 
     @Override
         public String deleteCategory(Long categoryId) throws ResponseStatusException {
             Category category = categoryRepository.findById(categoryId)
-                    .orElseThrow(() ->  new ResponseStatusException(NOT_FOUND, "Resource not found."));
+                    .orElseThrow(() ->  new ResourceNotFoundException("Category","categoryId",categoryId));
             categoryRepository.deleteById(categoryId);
             return category.toString();
         }
@@ -45,7 +55,7 @@ public class CategoryServiceImpl implements CategoryService {
             categoryRepository.save(category);
             return category;
         } else {
-            throw new ResponseStatusException(NOT_FOUND, String.format("Category don't find at this %s id", categoryId));
+            throw new ResourceNotFoundException("Category","categoryId",categoryId);
         }
     }
 
