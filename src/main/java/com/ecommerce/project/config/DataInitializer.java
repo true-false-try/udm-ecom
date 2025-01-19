@@ -59,7 +59,7 @@ public class DataInitializer {
             userRepository.save(user1);
             userRepository.save(user2);
             userRepository.save(user3);
-
+            
 
             // Create some posts
             Post post1 = new Post();

@@ -15,4 +15,13 @@ public class SocialProfile {
     @OneToOne
     @JoinColumn(name = "social_user_id")
     private SocialUser socialUser;
+
+    private String description;
+
+    public void setSocialUser(SocialUser socialUser) {
+        this.socialUser = socialUser;
+        if (socialUser.getSocialProfile() != this) {
+            socialUser.setSocialProfile(this);
+        }
+    }
 }
