@@ -20,13 +20,13 @@ public class SocialUser {
     @SequenceGenerator(name = "sequenceGeneratorId", allocationSize = 5)
     private Long id;
 
-    @OneToOne(mappedBy = "socialUser", cascade = CascadeType.ALL )
+    @OneToOne(mappedBy = "socialUser", cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY)
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private SocialProfile socialProfile;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "socialUser")
+    @OneToMany(mappedBy = "socialUser", cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE})
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private List<Post> posts = new ArrayList<>();
