@@ -4,7 +4,9 @@ package com.ecommerce.project.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.util.*;
 
@@ -19,10 +21,14 @@ public class SocialUser {
     private Long id;
 
     @OneToOne(mappedBy = "socialUser", cascade = CascadeType.ALL )
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private SocialProfile socialProfile;
 
     @JsonIgnore
     @OneToMany(mappedBy = "socialUser")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private List<Post> posts = new ArrayList<>();
 
     @JsonIgnore
@@ -32,14 +38,7 @@ public class SocialUser {
             joinColumns = @JoinColumn(name = "social_user_id"),
             inverseJoinColumns = @JoinColumn(name =  "group_id")
     )
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private Set<SocialGroup> socialGroups = new HashSet<>();
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
-
-    public void setSocialProfile(SocialProfile socialProfile) {
-        socialProfile.setSocialUser(this);
-        this.socialProfile = socialProfile;
-    }
 }

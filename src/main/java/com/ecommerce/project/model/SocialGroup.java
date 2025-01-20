@@ -2,10 +2,7 @@ package com.ecommerce.project.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.HashSet;
 import java.util.Objects;
@@ -21,10 +18,8 @@ public class SocialGroup {
 
     @JsonIgnore
     @ManyToMany(mappedBy = "socialGroups")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private Set<SocialUser> socialUsers = new HashSet<>();
 
-    @Override
-    public int hashCode(){
-        return Objects.hash(id);
-    }
 }

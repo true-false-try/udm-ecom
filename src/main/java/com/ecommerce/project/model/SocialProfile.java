@@ -2,7 +2,9 @@ package com.ecommerce.project.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data
 @Entity
@@ -14,14 +16,10 @@ public class SocialProfile {
 
     @OneToOne
     @JoinColumn(name = "social_user_id")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private SocialUser socialUser;
 
     private String description;
 
-    public void setSocialUser(SocialUser socialUser) {
-        this.socialUser = socialUser;
-        if (socialUser.getSocialProfile() != this) {
-            socialUser.setSocialProfile(this);
-        }
-    }
 }
