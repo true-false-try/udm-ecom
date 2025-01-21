@@ -2,24 +2,22 @@ package com.ecommerce.project.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 @Data
 @Entity
 @NoArgsConstructor
-public class SocialProfile {
+public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @OneToOne
-    @JoinColumn(name = "social_user_id")
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
-    private SocialUser socialUser;
-
+    private String productName;
     private String description;
+    private Integer quantity;
+    private double price;
+    private double specialPrice;
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
 
 }

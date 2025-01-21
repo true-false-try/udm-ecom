@@ -1,9 +1,9 @@
 package com.ecommerce.project.repositories;
 
-import com.ecommerce.project.model.Post;
+import com.ecommerce.project.model.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface PostRepository extends JpaRepository<Post,Long> {
+public interface ProductRepository extends JpaRepository<Product,Long> {
 }
