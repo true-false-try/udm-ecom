@@ -90,6 +90,10 @@ public class DataInitializer {
             profileRepository.save(profile1);
             profileRepository.save(profile2);
             profileRepository.save(profile3);
+
+            // FetchType
+            System.out.println("FETCH");
+            userRepository.findById(user1.getId());
         };
     }
 }

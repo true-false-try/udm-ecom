@@ -20,7 +20,7 @@ public class SocialUser {
     @SequenceGenerator(name = "sequenceGeneratorId", allocationSize = 5)
     private Long id;
 
-    @OneToOne(mappedBy = "socialUser", cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "socialUser", cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.EAGER)
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private SocialProfile socialProfile;
@@ -32,7 +32,7 @@ public class SocialUser {
     private List<Post> posts = new ArrayList<>();
 
     @JsonIgnore
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_group",
             joinColumns = @JoinColumn(name = "social_user_id"),
