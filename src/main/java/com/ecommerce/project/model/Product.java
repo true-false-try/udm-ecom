@@ -12,9 +12,11 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String productName;
+    private String image;
     private String description;
     private Integer quantity;
     private double price;
+    private double discount;
     private double specialPrice;
     @ManyToOne
     @JoinColumn(name = "category_id")
