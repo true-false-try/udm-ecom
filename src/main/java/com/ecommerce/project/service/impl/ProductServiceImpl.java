@@ -11,9 +11,16 @@ import com.ecommerce.project.service.ProductService;
 import com.ecommerce.project.exceptions.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.objenesis.SpringObjenesis;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -92,5 +99,32 @@ public class ProductServiceImpl implements ProductService {
                                         new ResourceNotFoundException("Product","productId", productId));
         productRepository.delete(product);
         return modelMapper.map(product, ProductDto.class) ;
+    }
+
+    @Override
+    public ProductDto updateProductImage(Long productId, MultipartFile image) throws IOException{
+        Product productFromDb = productRepository.findById(productId)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Product", "productI d", productId));
+        String path = "images/";
+        String fileName = uploadImage(path, image);
+
+        productFromDb.setImage(fileName);
+
+        Product updateProduct = productRepository.save(productFromDb);
+        return modelMapper.map(updateProduct, ProductDto.class);
+    }
+
+    private String uploadImage(String path, MultipartFile file) throws IOException {
+         String originalFileName = file.getOriginalFilename();
+         String randomId = UUID.randomUUID().toString();
+         String fileName = randomId.concat(originalFileName.substring(originalFileName.lastIndexOf('.')));
+         String filePath =  path + File.separator + fileName;
+         File folder = new File(path);
+         if (!folder.exists()){
+             folder.mkdir();
+         }
+         Files.copy(file.getInputStream(), Paths.get(filePath));
+         return fileName;
     }
 }

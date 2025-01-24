@@ -7,6 +7,9 @@ import com.ecommerce.project.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @RestController
 @RequestMapping("api")
@@ -49,5 +52,12 @@ public class ProductController {
         ProductDto responseProduct = productService.deleteProduct(productId);
         return ResponseEntity.ok(responseProduct);
 
+    }
+
+    @PutMapping("public/products/{productId}/image")
+    public ResponseEntity<ProductDto> updateProductImage(@PathVariable Long productId,
+                                                         @RequestParam("image") MultipartFile image) throws IOException {
+        ProductDto responseProductDto = productService.updateProductImage(productId, image);
+        return ResponseEntity.ok(responseProductDto);
     }
 }
