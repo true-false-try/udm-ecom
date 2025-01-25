@@ -1,5 +1,6 @@
 package com.ecommerce.project.service.impl;
 
+import com.ecommerce.project.exceptions.ApiException;
 import com.ecommerce.project.exceptions.ResourceNotFoundException;
 import com.ecommerce.project.model.Category;
 import com.ecommerce.project.model.Product;
@@ -38,13 +39,27 @@ public class ProductServiceImpl implements ProductService {
     public ProductDto addProduct(Long categoryId, ProductDto productDto) {
          Category category = categoryRepository.findById(categoryId)
                  . orElseThrow(() -> new ResourceNotFoundException("Category", "categoryId", categoryId));
-         Product product = modelMapper.map(productDto, Product.class);
-         product.setImage("default.png");
-         product.setCategory(category);
-         double specialPrice = product.getPrice() - (product.getDiscount() * 0.01) *  product.getPrice();
-         product.setSpecialPrice(specialPrice);
-         Product savedProduct = productRepository.save(product);
-        return modelMapper.map(savedProduct, ProductDto.class);
+
+        boolean isProductNotPresent = true;
+        List<Product> products = category.getProducts();
+        for (Product value : products) {
+            if (value.getProductName().equals(productDto.getProductName())) {
+                isProductNotPresent = false;
+                break;
+            }
+        }
+
+        if (isProductNotPresent) {
+            Product product = modelMapper.map(productDto, Product.class);
+            product.setImage("default.png");
+            product.setCategory(category);
+            double specialPrice = product.getPrice() - (product.getDiscount() * 0.01) *  product.getPrice();
+            product.setSpecialPrice(specialPrice);
+            Product savedProduct = productRepository.save(product);
+            return modelMapper.map(savedProduct, ProductDto.class);
+        } else {
+            throw new ApiException("Product already exist");
+        }
     }
 
     @Override
@@ -52,6 +67,10 @@ public class ProductServiceImpl implements ProductService {
         List<Product> products =  productRepository.findAll();
         List<ProductDto> productDtos = products.stream()
                 .map(product -> modelMapper.map(product, ProductDto.class)).toList();
+
+         if (products.isEmpty()) {
+             throw new ApiException("No products exist");
+         }
         ProductResponse productResponse = new ProductResponse();
         productResponse.setContent(productDtos);
 

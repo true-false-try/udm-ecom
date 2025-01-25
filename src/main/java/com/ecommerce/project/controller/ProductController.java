@@ -1,9 +1,9 @@
 package com.ecommerce.project.controller;
 
-import com.ecommerce.project.model.Product;
 import com.ecommerce.project.payload.ProductDto;
 import com.ecommerce.project.payload.ProductResponse;
 import com.ecommerce.project.service.ProductService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +18,7 @@ public class ProductController {
     private final ProductService productService;
 
     @PostMapping("/admin/categories/{categoryId}/product")
-    public ResponseEntity<ProductDto> addProduct(@RequestBody ProductDto productDto,
+    public ResponseEntity<ProductDto> addProduct(@Valid @RequestBody ProductDto productDto,
                                                  @PathVariable Long categoryId) {
         ProductDto responseProductDto = productService.addProduct(categoryId, productDto);
         return ResponseEntity.ok(responseProductDto);
@@ -41,7 +41,7 @@ public class ProductController {
     }
 
     @PutMapping("admin/products/{productId}")
-    public ResponseEntity<ProductDto> updateProduct(@RequestBody ProductDto productDto,
+    public ResponseEntity<ProductDto> updateProduct(@Valid @RequestBody ProductDto productDto,
                                                     @PathVariable Long productId) {
         ProductDto responseProduct = productService.updateProduct(productDto, productId);
         return ResponseEntity.ok(responseProduct);
