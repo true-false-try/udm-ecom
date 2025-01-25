@@ -9,9 +9,9 @@ import java.io.IOException;
 
 public interface ProductService {
      ProductDto addProduct(Long categoryId, ProductDto productDto);
-     ProductResponse getAllProducts();
-     ProductResponse searchByCategory(Long  categoryId);
-     ProductResponse searchProductsByKeyword(String keyword);
+     ProductResponse getAllProducts(Integer pageNumber, Integer pageSize, String sortBy, String sortOrder);
+     ProductResponse searchByCategory(Integer pageNumber, Integer pageSize, String sortBy, String sortOrder, Long categoryId);
+     ProductResponse searchProductsByKeyword(Integer pageNumber, Integer pageSize, String sortBy, String sortOrder, String keyword);
      ProductDto updateProduct(ProductDto productDto, Long productId);
      ProductDto deleteProduct(Long productId);
      ProductDto updateProductImage(Long productId, MultipartFile image) throws IOException;
