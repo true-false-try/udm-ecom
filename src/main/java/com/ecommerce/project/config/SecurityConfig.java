@@ -45,7 +45,7 @@ public class SecurityConfig {
                         .anyRequest()
                         .authenticated());
         http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-        http.exceptionHandling(exeption -> exeption.authenticationEntryPoint( unauthorizedHandler));
+        http.exceptionHandling(exeption -> exeption.authenticationEntryPoint(unauthorizedHandler));
         http.headers(header -> header.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin));
         http.addFilterBefore(authTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 
