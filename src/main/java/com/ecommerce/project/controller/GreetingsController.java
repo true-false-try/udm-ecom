@@ -5,7 +5,6 @@ import com.ecommerce.project.jwt.LoginRequest;
 import com.ecommerce.project.jwt.LoginResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,13 +18,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.w3c.dom.stylesheets.LinkStyle;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static java.util.stream.Collectors.toList;
 
 @RestController
 @RequiredArgsConstructor
@@ -67,7 +63,7 @@ public class GreetingsController {
         String jwtToken = jwtUtils.generateTokenFromUsername(userDetails);
         List<String> roles = userDetails.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority).toList();
-        LoginResponse loginResponse = new LoginResponse(userDetails.getUsername(), userDetails.getPassword(), roles);
+        LoginResponse loginResponse = new LoginResponse(jwtToken, userDetails.getUsername(), roles);
         return ResponseEntity.ok(loginResponse);
 
 
