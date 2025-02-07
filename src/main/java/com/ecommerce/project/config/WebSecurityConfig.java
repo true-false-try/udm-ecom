@@ -26,7 +26,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.servlet.FrameworkServlet;
 
 import java.util.Set;
 
@@ -60,7 +59,7 @@ public class WebSecurityConfig {
     }
 
     @Bean
-    SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http, com.ecommerce.project.security.jwt.AuthTokenFilter authTokenFilter, FrameworkServlet frameworkServlet) throws Exception {
+    SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http, AuthTokenFilter authTokenFilter) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
                 .sessionManagement(sesion -> sesion.sessionCreationPolicy(
@@ -68,8 +67,9 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers("/api/auth/**").permitAll()
                                 .requestMatchers("/v3/api-docs/**").permitAll()
-                                //.requestMatchers("/api/admin/**").permitAll()
-                                .requestMatchers("/api/public/**").permitAll()
+                                // .requestMatchers("/api/admin/**").permitAll()
+                                // .requestMatchers("/api/public/**").permitAll()
+                                .requestMatchers("/h2-console/**").permitAll()
                                 .requestMatchers("/swagger-ui/**").permitAll()
                                 .requestMatchers("/api/test/**").permitAll()
                                 .requestMatchers("/images/**").permitAll()
@@ -105,21 +105,24 @@ public class WebSecurityConfig {
     public CommandLineRunner initData(RoleRepository roleRepository, UserRepository userRepository, PasswordEncoder passwordEncoder) {
         return args -> {
             // Retrieve or create roles
-                Role userRole = roleRepository.findByRoleName(AppRole.ROLE_USER)
+            Role userRole = roleRepository.findByRoleName(AppRole.ROLE_USER)
                     .orElseGet(() -> {
-                        Role newUserRole = new Role(1, AppRole.ROLE_USER);
+                        Role newUserRole = new Role();
+                        newUserRole.setRoleName(AppRole.ROLE_USER);
                         return roleRepository.save(newUserRole);
                     });
 
             Role sellerRole = roleRepository.findByRoleName(AppRole.ROLE_SELLER)
                     .orElseGet(() -> {
-                        Role newSellerRole = new Role(2, AppRole.ROLE_SELLER);
+                        Role newSellerRole = new Role();
+                        newSellerRole.setRoleName(AppRole.ROLE_SELLER);
                         return roleRepository.save(newSellerRole);
                     });
 
             Role adminRole = roleRepository.findByRoleName(AppRole.ROLE_ADMIN)
                     .orElseGet(() -> {
-                        Role newAdminRole = new Role(3, AppRole.ROLE_ADMIN);
+                        Role newAdminRole = new Role();
+                        newAdminRole.setRoleName(AppRole.ROLE_ADMIN);
                         return roleRepository.save(newAdminRole);
                     });
 
@@ -154,17 +157,17 @@ public class WebSecurityConfig {
             }
 
             // Update roles for existing users
-            userRepository.findByUserName("user1").ifPresent(user -> {
+            userRepository.findByUsername("user1").ifPresent(user -> {
                 user.setRoles(userRoles);
                 userRepository.save(user);
             });
 
-            userRepository.findByUserName("seller1").ifPresent(seller -> {
+            userRepository.findByUsername("seller1").ifPresent(seller -> {
                 seller.setRoles(sellerRoles);
                 userRepository.save(seller);
             });
 
-            userRepository.findByUserName("admin").ifPresent(admin -> {
+            userRepository.findByUsername("admin").ifPresent(admin -> {
                 admin.setRoles(adminRoles);
                 userRepository.save(admin);
             });
