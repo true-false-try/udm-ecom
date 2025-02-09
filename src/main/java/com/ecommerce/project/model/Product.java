@@ -16,7 +16,7 @@ import java.util.List;
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long productId;
 
     @NotBlank(message = "Product name must not be blank")
     @Size(min = 3, message = "Product name at list must contain 3 characters")
