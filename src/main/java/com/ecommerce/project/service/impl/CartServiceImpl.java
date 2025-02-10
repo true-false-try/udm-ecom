@@ -81,6 +81,39 @@ public class CartServiceImpl implements CartService {
         return cartDTO;
     }
 
+    @Override
+    public List<CartDto> getAllCarts() {
+        List<Cart> carts = cartRepository.findAll();
+        if (carts.size() == 0) {
+            throw new ApiException("No cart exists");
+        }
+        return carts.stream()
+                .map(cart -> {
+                    CartDto cartDto = modelMapper.map(cart, CartDto.class);
+                    Stream<ProductDto> products = cart.getCartItems().stream()
+                            .map(p -> modelMapper.map(p.getProduct(), ProductDto.class));
+                    cartDto.setProducts(products.toList());
+                    return cartDto;
+                }).toList();
+    }
+
+    @Override
+    public CartDto getCart(String emailId, Long cartId) {
+        Cart cart = cartRepository.findCartByEmailAndCartId(emailId, cartId);
+        if (cart == null) {
+            throw new ResourceNotFoundException("Cart", "cartId", cartId);
+        }
+        CartDto cartDto = modelMapper.map(cart, CartDto.class);
+        cart.getCartItems().forEach(
+                c -> c.getProduct().setQuantity(c.getQuantity())
+        );
+        List<ProductDto> products = cart.getCartItems().stream()
+                .map(p ->modelMapper.map(p.getProduct(), ProductDto.class))
+                .toList();
+        cartDto.setProducts(products);
+        return cartDto;
+    }
+
     private Cart createCart() {
         Cart userCart  = cartRepository.findCartByEmail(authUtil.loggedInEmail());
         if(userCart != null){
