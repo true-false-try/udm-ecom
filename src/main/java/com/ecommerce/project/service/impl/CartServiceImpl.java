@@ -141,6 +141,18 @@ public class CartServiceImpl implements CartService {
              throw new ApiException("Product "  + product.getProducts() + " not available in the cart!!!");
          }
 
+        // Calculate new quantity
+        int newQuantity = cartItem.getQuantity() + quantity;
+
+        // Validate o prevent negative quantities
+        if (newQuantity < 0) {
+            throw new ApiException("The resulting quantity cannot be negative. ");
+        }
+
+        if (newQuantity == 0 ) {
+            deleteProductFromCart(cartId, productId);
+        }
+
         cartItem.setProductPrice(product.getSpecialPrice());
         cartItem.setQuantity(cartItem.getQuantity() + quantity);
         cartItem.setDiscount(product.getDiscount());
@@ -167,6 +179,7 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
+    @Transactional
     public String deleteProductFromCart(Long cartId, Long productId) {
         Cart cart = cartRepository.findById(cartId)
                 .orElseThrow(() -> new ResourceNotFoundException("Cart", "cartId", cartId));
