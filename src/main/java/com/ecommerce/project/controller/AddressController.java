@@ -7,9 +7,9 @@ import com.ecommerce.project.util.AuthUtil;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @AllArgsConstructor
@@ -19,10 +19,18 @@ public class AddressController {
     private final AuthUtil authUtil;
     private final AddressService addressService;
 
+
+    @PostMapping("addresses")
     public ResponseEntity<AddressDto> createAddress(@Valid @RequestBody AddressDto addressDto) {
         User user = authUtil.loggedInUser();
         AddressDto saveAddressDto = addressService.createAddress(addressDto, user);
         return ResponseEntity.ok().body(saveAddressDto);
+    }
+
+    @GetMapping("adresses")
+    public ResponseEntity<List<AddressDto>> getAddresses() {
+        List<AddressDto> addressDtos = addressService.getAddresses();
+        return ResponseEntity.ok().body(addressDtos);
     }
 
 

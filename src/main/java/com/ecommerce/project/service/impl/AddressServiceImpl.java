@@ -29,4 +29,12 @@ public class AddressServiceImpl implements AddressService {
         Address saveAddress = addressRepository.save(address);
         return modelMapper.map(saveAddress, AddressDto.class);
     }
+
+    @Override
+    public List<AddressDto> getAddresses() {
+        List<Address> addresses = addressRepository.findAll();
+        return addresses.stream()
+                .map(address -> modelMapper.map(address, AddressDto.class))
+                .toList();
+    }
 }
