@@ -53,10 +53,10 @@ public class User {
 
     @Getter
     @Setter
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(name = "user_ adress",
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    /*@JoinTable(name = "user_ adress",
             joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "address_id"))
+            inverseJoinColumns = @JoinColumn(name = "address_id"))*/
     private List<Address> addresses = new ArrayList<>();
 
     @ToString.Exclude

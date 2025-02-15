@@ -25,7 +25,7 @@ public class AddressServiceImpl implements AddressService {
         addresses.add(address);
 
         user.setAddresses(addresses);
-        address.setUsers(List.of(user));
+        address.setUser(user);
         Address saveAddress = addressRepository.save(address);
         return modelMapper.map(saveAddress, AddressDto.class);
     }
