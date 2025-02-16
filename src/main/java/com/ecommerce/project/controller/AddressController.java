@@ -27,10 +27,36 @@ public class AddressController {
         return ResponseEntity.ok().body(saveAddressDto);
     }
 
-    @GetMapping("adresses")
+    @GetMapping("addresses")
     public ResponseEntity<List<AddressDto>> getAddresses() {
         List<AddressDto> addressDtos = addressService.getAddresses();
         return ResponseEntity.ok().body(addressDtos);
+    }
+
+    @GetMapping("address/{addressId}")
+    public ResponseEntity<AddressDto> getAddressId(@PathVariable Long addressId) {
+        AddressDto result = addressService.getAddressId(addressId);
+        return ResponseEntity.ok().body(result);
+    }
+
+    @GetMapping("addresses")
+    public ResponseEntity<List<AddressDto>> getUserAddresses() {
+        User user = authUtil.loggedInUser();
+        List<AddressDto> result = addressService.getUserAddresses(user);
+        return ResponseEntity.ok().body(result);
+    }
+
+    @PutMapping("address/{addressId}")
+    public ResponseEntity<AddressDto> updateAddressId(@PathVariable Long addressId,
+                                                      @RequestBody AddressDto addressDto) {
+        AddressDto result = addressService.updateAddressId(addressId, addressDto);
+        return ResponseEntity.ok().body(result);
+    }
+
+    @DeleteMapping("address/{addressId}")
+    public ResponseEntity<String> deleteAddressId(@PathVariable Long addressId) {
+        String result = addressService.deleteAddressId(addressId);
+        return ResponseEntity.ok().body(result);
     }
 
 
