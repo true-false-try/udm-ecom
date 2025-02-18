@@ -2,21 +2,21 @@ package com.ecommerce.project.controller;
 
 import com.ecommerce.project.payload.OrderDto;
 import com.ecommerce.project.payload.OrderRequestDto;
+import com.ecommerce.project.service.OrderService;
 import com.ecommerce.project.util.AuthUtil;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api")
+@AllArgsConstructor
 public class OrderController {
 
-    @Autowired
-    private OrderService orderService;
+    private final OrderService orderService;
 
-    @Autowired
-    private AuthUtil authUtil;
+    private final AuthUtil authUtil;
 
     @PostMapping("/order/users/payments/{paymentMethod}")
     public ResponseEntity<OrderDto> orderProducts(@PathVariable String paymentMethod, @RequestBody OrderRequestDto orderRequestDTO) {
