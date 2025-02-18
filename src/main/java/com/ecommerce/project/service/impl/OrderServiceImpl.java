@@ -9,38 +9,41 @@ import com.ecommerce.project.repositories.*;
 import com.ecommerce.project.service.CartService;
 import com.ecommerce.project.service.OrderService;
 import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
+@AllArgsConstructor
 public class OrderServiceImpl implements OrderService {
 
-    @Autowired
-    CartRepository cartRepository;
 
-    @Autowired
-    AddressRepository addressRepository;
+    private final CartRepository cartRepository;
 
-    @Autowired
-    OrderItemRepository orderItemRepository;
 
-    @Autowired
-    OrderRepository orderRepository;
+    private final AddressRepository addressRepository;
 
-    @Autowired
-    PaymentRepository paymentRepository;
 
-    @Autowired
-    CartService cartService;
+    private final OrderItemRepository orderItemRepository;
 
-    @Autowired
-    ModelMapper modelMapper;
 
-    @Autowired
-    ProductRepository productRepository;
+    private final OrderRepository orderRepository;
+
+
+    private final PaymentRepository paymentRepository;
+
+
+    private final CartService cartService;
+
+
+    private final ModelMapper modelMapper;
+
+
+    private final ProductRepository productRepository;
 
     @Override
     @Transactional
