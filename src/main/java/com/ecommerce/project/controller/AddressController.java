@@ -39,7 +39,7 @@ public class AddressController {
         return ResponseEntity.ok().body(result);
     }
 
-    @GetMapping("addresses")
+    @GetMapping("users/addresses")
     public ResponseEntity<List<AddressDto>> getUserAddresses() {
         User user = authUtil.loggedInUser();
         List<AddressDto> result = addressService.getUserAddresses(user);

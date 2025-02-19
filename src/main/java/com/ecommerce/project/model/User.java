@@ -37,6 +37,9 @@ public class User {
     @Size(max = 120)
     private String password;
 
+    @Column(nullable = false, columnDefinition = "bit(1) default 1")
+    private Boolean enable = true;
+
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_role",
