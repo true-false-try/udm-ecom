@@ -14,6 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @Table(name = "products")
 public class Product {
+    public String getImage;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long productId;
