@@ -1,15 +1,9 @@
 package com.ecommerce.project.config;
 
-import com.ecommerce.project.model.AppRole;
-import com.ecommerce.project.model.Role;
-import com.ecommerce.project.model.User;
-import com.ecommerce.project.repositories.RoleRepository;
-import com.ecommerce.project.repositories.UserRepository;
 import com.ecommerce.project.security.jwt.AuthEntryPointJwt;
 import com.ecommerce.project.security.jwt.AuthTokenFilter;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -26,8 +20,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
-import java.util.Set;
 
 @Slf4j
 @Configuration
@@ -101,7 +93,7 @@ public class WebSecurityConfig {
     }
 
     // Filled DB
-    @Bean
+   /* @Bean
     public CommandLineRunner initData(RoleRepository roleRepository, UserRepository userRepository, PasswordEncoder passwordEncoder) {
         return args -> {
             // Retrieve or create roles
@@ -172,5 +164,5 @@ public class WebSecurityConfig {
                 userRepository.save(admin);
             });
         };
-    }
+    }*/
 }
